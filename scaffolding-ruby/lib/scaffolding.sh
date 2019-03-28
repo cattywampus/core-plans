@@ -349,7 +349,7 @@ scaffolding_generate_binstubs() {
 scaffolding_vendor_bundler() {
   build_line "Vendoring 'bundler' version ${_bundler_version}"
   gem install \
-    --local "$(pkg_path_for bundler)/cache/bundler-${_bundler_version}.gem" \
+    --local "$(pkg_path_for ruby26)/cache/bundler-${_bundler_version}.gem" \
     --install-dir "$GEM_HOME" \
     --bindir "$scaffolding_app_prefix/binstubs" \
     --no-ri \
@@ -450,7 +450,7 @@ _setup_vars() {
     jdbc-postgresql jruby-pg rjack-jdbc-postgres
     tgbyte-activerecord-jdbcpostgresql-adapter)
   # The version of Bundler in use
-  _bundler_version="$("$(pkg_path_for bundler)/bin/bundle" --version \
+  _bundler_version="$("$(pkg_path_for ruby26)/bin/bundle" --version \
     | awk '/^Bundler version/ {print $NF}')"
   # The install prefix path for the app
   app_prefix="app"
@@ -483,7 +483,7 @@ _detect_gemfile() {
   if [[ ! -f Gemfile.lock ]]; then
     local uid gid
     build_line "No Gemfile.lock found, running 'bundle lock'"
-    "$(pkg_path_for bundler)/bin/bundle" lock
+    "$(pkg_path_for ruby26)/bin/bundle" lock
     # Set ownership of `Gemfile.lock` to be the same as `Gemfile`.
     uid="$(stat -c "%u" Gemfile)"
     gid="$(stat -c "%g" Gemfile)"
@@ -831,7 +831,7 @@ _detect_webpacker() {
 # versions specfied in the Gemfile.
 _bundle() {
   local bundler_prefix
-  bundler_prefix="$(pkg_path_for bundler)"
+  bundler_prefix="$(pkg_path_for ruby26)"
 
   env \
     -u RUBYOPT \
